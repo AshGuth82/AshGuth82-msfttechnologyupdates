@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Microsoft Corporate Intelligence Hub</title>
+    
+    <!-- Mobile PWA Integration Capabilities -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="IntelHub" />
+    <link rel="apple-touch-icon" href="/AppLogo.svg" />
+    <meta name="theme-color" content="#0b0f19" />
+    <script>
+      // Graceful handler to prevent third-party extension and iframe wrapper fetch setter errors from interrupting runtime
+      (function() {
+        const originalFetch = window.fetch;
+        let currentFetch = originalFetch;
+        try {
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return currentFetch;
+            },
+            set: function(val) {
+              console.warn('Interception: Attempt to overwrite window.fetch handled gracefully');
+              currentFetch = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          console.warn('Could not define custom fetch getter/setter:', e);
+        }
+      })();
+
+      window.addEventListener('error', function(event) {
+        if (event.message && (event.message.indexOf('fetch') !== -1 || event.message.indexOf('only a getter') !== -1)) {
+          console.warn('Swallowed window.fetch or read-only getter error:', event.message);
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason && event.reason.message && (event.reason.message.indexOf('fetch') !== -1 || event.reason.message.indexOf('only a getter') !== -1)) {
+          console.warn('Swallowed unhandled promise fetch error:', event.reason.message);
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
