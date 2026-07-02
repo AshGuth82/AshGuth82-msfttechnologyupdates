@@ -1059,6 +1059,9 @@ export default function App() {
   const [contactPartnerMessage, setContactPartnerMessage] = useState("");
   const [isSendingPartnerContact, setIsSendingPartnerContact] = useState(false);
 
+  // Compare partners state
+  const [partnersToCompare, setPartnersToCompare] = useState<string[]>([]);
+
   // Regional headquarters map states
   const [selectedCityFilter, setSelectedCityFilter] = useState<string | null>(null);
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
@@ -10310,6 +10313,32 @@ ${advice}
 
                               {/* Management Controls */}
                               <div className="flex items-center gap-2">
+                                {/* Compare Checkbox */}
+                                <label
+                                  className={`flex items-center gap-1.5 cursor-pointer text-[11px] font-bold p-1.5 px-3 rounded-lg border transition ${
+                                    partnersToCompare.includes(partner.id) 
+                                      ? "bg-sky-500/10 border-sky-500/30 text-sky-400 hover:bg-sky-500/20" 
+                                      : isDark 
+                                        ? "bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                                        : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                                  }`}
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={partnersToCompare.includes(partner.id)}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setPartnersToCompare((prev) => [...prev, partner.id]);
+                                      } else {
+                                        setPartnersToCompare((prev) => prev.filter((id) => id !== partner.id));
+                                      }
+                                    }}
+                                    className="rounded border-slate-600 bg-slate-800 text-sky-500 focus:ring-sky-500 cursor-pointer accent-sky-500 h-3.5 w-3.5"
+                                  />
+                                  <span>Compare</span>
+                                </label>
+
                                 <button
                                   type="button"
                                   onClick={(e) => {
@@ -12304,6 +12333,115 @@ ${advice}
                   </button>
                 </div>
               </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Compare Partners Drawer */}
+        <AnimatePresence>
+          {partnersToCompare.length > 0 && (
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", stiffness: 250, damping: 25 }}
+              className={`fixed bottom-0 left-0 right-0 z-[90] border-t shadow-2xl p-4 sm:p-6 pb-8 max-h-[85vh] overflow-y-auto ${
+                isDark ? "bg-[#0b0f19] border-slate-800" : "bg-white border-slate-200"
+              }`}
+            >
+              <div className="max-w-7xl mx-auto">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-sky-500/10 p-2 rounded-lg border border-sky-500/20 text-sky-500">
+                      <List className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className={`font-bold font-sans text-lg leading-none ${isDark ? "text-white" : "text-slate-900"}`}>
+                        Partner Comparison
+                      </h3>
+                      <p className={`text-xs mt-1 font-mono ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+                        {partnersToCompare.length} partner{partnersToCompare.length > 1 ? "s" : ""} selected for evaluation
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setPartnersToCompare([])}
+                      className="px-4 py-2 rounded-lg text-xs font-bold font-mono text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+                    >
+                      Clear All
+                    </button>
+                    <button
+                      onClick={() => setPartnersToCompare([])}
+                      className="p-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white transition cursor-pointer bg-slate-900 border border-slate-800"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex overflow-x-auto gap-6 pb-4 custom-scrollbar snap-x">
+                  {partnersToCompare.map(id => {
+                    const p = partners.find(p => p.id === id);
+                    if (!p) return null;
+                    return (
+                      <div key={p.id} className={`shrink-0 w-80 rounded-2xl border p-5 snap-center relative flex flex-col ${isDark ? "bg-[#111827] border-slate-800/80" : "bg-slate-50 border-slate-200"}`}>
+                        <button
+                          onClick={() => setPartnersToCompare(prev => prev.filter(pid => pid !== id))}
+                          className="absolute top-4 right-4 p-1.5 rounded bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                        
+                        <h4 className={`text-base font-extrabold font-sans mb-1 pr-8 ${isDark ? "text-white" : "text-slate-900"}`}>{p.name}</h4>
+                        <div className="flex items-center gap-1.5 mb-4">
+                          <MapPin className="w-3.5 h-3.5 text-sky-450" />
+                          <span className={`text-[11px] font-mono ${isDark ? "text-slate-400" : "text-slate-500"}`}>{p.location}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2 mb-5">
+                          <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 px-2 py-1 rounded-lg">
+                            <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                            <span className="text-xs font-bold font-mono text-slate-200">{p.rating.toFixed(1)}</span>
+                          </div>
+                          <span className="text-[10px] text-slate-500 font-mono">{p.ratingCount} reviews</span>
+                        </div>
+
+                        <div className="space-y-4 grow">
+                          <div>
+                            <h5 className="text-[10px] uppercase font-mono tracking-widest text-slate-500 mb-2 font-bold">Specializations</h5>
+                            <div className="flex flex-wrap gap-1.5">
+                              {p.specialization.map((spec, i) => (
+                                <span key={i} className={`text-[10px] px-2 py-1 rounded-md border font-sans font-medium ${isDark ? "bg-sky-500/10 border-sky-500/20 text-sky-400" : "bg-sky-50 border-sky-100 text-sky-800"}`}>
+                                  {spec}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div>
+                            <h5 className="text-[10px] uppercase font-mono tracking-widest text-slate-500 mb-2 font-bold">Case Study</h5>
+                            <p className={`text-xs font-medium mb-1 ${isDark ? "text-slate-200" : "text-slate-800"}`}>{p.caseStudyTitle}</p>
+                            <p className={`text-[11px] leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>{p.caseStudyContext}</p>
+                          </div>
+                        </div>
+
+                        <div className="mt-5 pt-5 border-t border-slate-800">
+                          <button
+                            onClick={() => {
+                              setShowContactPartnerModal(p);
+                            }}
+                            className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold font-mono rounded-lg transition cursor-pointer flex items-center justify-center gap-2"
+                          >
+                            <Mail className="w-3.5 h-3.5" />
+                            Contact Partner
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
