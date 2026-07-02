@@ -760,9 +760,9 @@ export default function App() {
   useEffect(() => {
     const path = location.pathname.toLowerCase();
     if (activeMainView === "blogs" && path !== "/blogs" && path !== "/blogs/") {
-      navigate("/blogs");
+      navigate("/blogs/");
     } else if (activeMainView === "partners" && path !== "/partners" && path !== "/partners/") {
-      navigate("/Partners");
+      navigate("/partners/");
     } else if (activeMainView !== "blogs" && activeMainView !== "partners" && (path === "/blogs" || path === "/blogs/" || path === "/partners" || path === "/partners/")) {
       navigate("/");
     }
