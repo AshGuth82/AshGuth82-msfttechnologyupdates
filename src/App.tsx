@@ -970,6 +970,49 @@ export default function App() {
     }
   };
 
+  const handleContactPartnerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!showContactPartnerModal || !contactPartnerMessage.trim()) {
+      addToast("licensing_pricing", "Message Required", "Please provide a message to send.");
+      return;
+    }
+
+    setIsSendingPartnerContact(true);
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: showContactPartnerModal.contactEmail,
+          subject: `Partnership Request from MSFT Tech Updates - ${showContactPartnerModal.name}`,
+          content: contactPartnerMessage
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+
+      addToast(
+        "anz_strategy",
+        "Message Sent",
+        `Partnership request successfully sent to ${showContactPartnerModal.name}.`
+      );
+
+      setContactPartnerMessage("");
+      setShowContactPartnerModal(null);
+    } catch (err) {
+      console.error("Failed to send partner message:", err);
+      addToast(
+        "licensing_pricing",
+        "Dispatch Failed",
+        "There was an error sending the message to the partner. Please try again."
+      );
+    } finally {
+      setIsSendingPartnerContact(false);
+    }
+  };
+
   const [sydneyTime, setSydneyTime] = useState<string>(() => {
     return new Date().toLocaleTimeString("en-AU", {
       timeZone: "Australia/Sydney",
@@ -1010,6 +1053,11 @@ export default function App() {
   const [newPartnerCaseStudyContext, setNewPartnerCaseStudyContext] = useState("");
   const [newPartnerEmail, setNewPartnerEmail] = useState("");
   const [newPartnerWebsite, setNewPartnerWebsite] = useState("");
+
+  // Contact Partner Modal state
+  const [showContactPartnerModal, setShowContactPartnerModal] = useState<MicrosoftPartner | null>(null);
+  const [contactPartnerMessage, setContactPartnerMessage] = useState("");
+  const [isSendingPartnerContact, setIsSendingPartnerContact] = useState(false);
 
   // Regional headquarters map states
   const [selectedCityFilter, setSelectedCityFilter] = useState<string | null>(null);
@@ -10392,13 +10440,13 @@ ${advice}
                         </div>
                       )}
 
-                      <a
-                        href={`mailto:${activeSelectedPartner.contactEmail}`}
-                        className="flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold transition duration-150"
+                      <button
+                        onClick={() => setShowContactPartnerModal(activeSelectedPartner)}
+                        className="flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold transition duration-150 cursor-pointer"
                       >
                         <Mail className="w-4 h-4" />
                         <span>Contact Partner</span>
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -12154,6 +12202,111 @@ ${advice}
           </motion.div>
         )}
       </AnimatePresence>
+
+        {/* Contact Partner Request Modal */}
+        <AnimatePresence>
+          {showContactPartnerModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-[#03060c]/80 backdrop-blur-sm p-4 sm:p-6"
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0, y: 10 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 10 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="bg-[#0b0f19] border border-slate-800 shadow-2xl rounded-2xl w-full max-w-lg overflow-hidden relative"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-slate-800/80 px-6 py-4 bg-slate-950/45">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-450 border border-emerald-500/20">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
+                        Request Partnership
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-450 animate-pulse block"></span>
+                      </h3>
+                      <p className="text-[10px] text-slate-400 mt-0.5 font-sans">
+                        Connect with {showContactPartnerModal.name} via direct secure channel.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowContactPartnerModal(null)}
+                    className="rounded-lg p-1 text-slate-400 hover:bg-slate-800/50 hover:text-white transition cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Body */}
+                <div className="p-6">
+                  <form id="contact-partner-form" onSubmit={handleContactPartnerSubmit}>
+                    <div className="mb-4">
+                      <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider font-mono mb-2">
+                        To Partner Entity
+                      </label>
+                      <div className="w-full bg-[#111827] border border-slate-800/60 rounded-lg p-3 text-xs text-slate-400 flex items-center gap-2 cursor-not-allowed">
+                        <Globe className="w-4 h-4 text-emerald-400" />
+                        <span className="font-bold text-slate-200">{showContactPartnerModal.name}</span>
+                        <span className="mx-1 text-slate-600">|</span>
+                        <span>{showContactPartnerModal.contactEmail}</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider font-mono mb-2">
+                        Secure Message Payload
+                      </label>
+                      <textarea
+                        required
+                        value={contactPartnerMessage}
+                        onChange={(e) => setContactPartnerMessage(e.target.value)}
+                        rows={5}
+                        className="w-full rounded-xl bg-[#05070c] border border-slate-800 p-4 text-xs text-slate-200 focus:border-emerald-500/50 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 font-sans leading-relaxed custom-scrollbar transition"
+                        placeholder="Detail your technology footprint, enterprise goals, or required licensing audit parameters..."
+                      />
+                    </div>
+                  </form>
+                </div>
+
+                {/* Footer */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-slate-950/45 px-6 py-4 border-t border-slate-800/80">
+                  <button
+                    type="button"
+                    onClick={() => setShowContactPartnerModal(null)}
+                    className="text-xs text-slate-400 hover:text-white font-mono px-4 py-2 hover:bg-slate-800/20 rounded transition cursor-pointer text-center sm:text-left"
+                  >
+                    Cancel & Abort
+                  </button>
+
+                  <button
+                    form="contact-partner-form"
+                    type="submit"
+                    disabled={isSendingPartnerContact}
+                    className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded text-xs font-mono font-bold shadow-[0_4px_12px_rgba(16,185,129,0.2)] transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSendingPartnerContact ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>Transmitting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Dispatch Request Payload</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
     </div>
   );
 }
