@@ -558,6 +558,121 @@ const DEFAULT_PARTNERS: MicrosoftPartner[] = [
         date: "2026-06-01"
       }
     ]
+  },
+  {
+    id: "partner-barhead",
+    name: "Barhead Solutions",
+    location: "Sydney, NSW",
+    rating: 4.9,
+    ratingCount: 112,
+    promoted: false,
+    specialization: ["AI Engine Development", "Power Platform Solutions", "Dynamics 365 Enterprise"],
+    description: "An award-winning Microsoft Gold Partner specializing in AI-driven CRM and specialized Copilot integrations. Barhead leads ANZ in transforming enterprise workflows using generative AI models and the Microsoft Power Platform.",
+    caseStudyTitle: "National Retailer AI Customer Service Hub",
+    caseStudyContext: "Integrated Copilot Studio and custom generative AI models into Dynamics 365 to handle 40% of tier-one customer service inquiries autonomously, drastically reducing resolution times.",
+    contactEmail: "hello@barhead.com",
+    websiteUrl: "https://barhead.com",
+    reviews: [
+      {
+        id: "rev-barhead-1",
+        reviewer: "Alicia Torres",
+        rating: 5,
+        comment: "Their expertise in Copilot and Power Platform is unmatched in the region. Highly recommended for AI projects.",
+        date: "2026-06-12"
+      }
+    ]
+  },
+  {
+    id: "partner-bizdata",
+    name: "BizData",
+    location: "Melbourne, VIC & Regional",
+    rating: 4.8,
+    ratingCount: 89,
+    promoted: false,
+    specialization: ["AI & Data", "Azure Cloud Migration", "Copilot Transformation"],
+    description: "A specialist Microsoft Partner focusing on advanced analytics, Artificial Intelligence, and Big Data on Azure. BizData empowers organizations to build secure, scalable AI foundations.",
+    caseStudyTitle: "State Health Department Predictive AI Modeling",
+    caseStudyContext: "Architected a secure Azure Data Lake and machine learning pipeline to predict hospital admission rates, achieving a 15% improvement in resource allocation accuracy.",
+    contactEmail: "info@bizdata.com.au",
+    websiteUrl: "https://www.bizdata.com.au",
+    reviews: [
+      {
+        id: "rev-bizdata-1",
+        reviewer: "Dr. James Aris",
+        rating: 4.5,
+        comment: "Exceptional capability in data architecture and secure AI deployments.",
+        date: "2026-05-30"
+      }
+    ]
+  },
+  {
+    id: "partner-exigo",
+    name: "Exigo Tech",
+    location: "Sydney, NSW",
+    rating: 4.7,
+    ratingCount: 65,
+    promoted: false,
+    specialization: ["Modern Workplace", "AI Engine Development", "Managed IT Services"],
+    description: "A trusted Microsoft Solutions Partner delivering end-to-end IT modernization. Exigo Tech combines deep expertise in Microsoft 365 with emerging generative AI technologies to streamline digital workspaces.",
+    caseStudyTitle: "Legal Firm M365 Copilot Rollout",
+    caseStudyContext: "Executed a comprehensive Copilot readiness assessment and deployment for a major law firm, enhancing document summarization and legal research efficiency.",
+    contactEmail: "sales@exigotech.com.au",
+    websiteUrl: "https://www.exigotech.com.au",
+    reviews: [
+      {
+        id: "rev-exigo-1",
+        reviewer: "Marcus Holloway",
+        rating: 5,
+        comment: "The Copilot readiness workshops were eye-opening and perfectly tailored to our security requirements.",
+        date: "2026-06-25"
+      }
+    ]
+  },
+  {
+    id: "partner-logicalis",
+    name: "Logicalis (ANZ)",
+    location: "ANZ",
+    rating: 4.8,
+    ratingCount: 142,
+    promoted: true,
+    specialization: ["Enterprise AI", "Secure Data Foundations", "Governance", "Copilot Studio", "Custom AI Agents"],
+    description: "Recently recognized by Microsoft with Frontier Partner status for enterprise AI. They have a massive focus across the ANZ market for enterprise-scale adoption, specialized in secure data foundations, governance, Copilot Studio, and custom AI agents.",
+    caseStudyTitle: "Enterprise AI & Secure Data Foundation",
+    caseStudyContext: "Enabled large-scale secure data foundation and custom Copilot deployment for enterprise customers across ANZ, establishing robust governance frameworks.",
+    contactEmail: "info@logicalis.com.au",
+    websiteUrl: "https://www.logicalis.com.au/",
+    reviews: [
+      {
+        id: "rev-logicalis-1",
+        reviewer: "Sarah Jenkins",
+        rating: 5,
+        comment: "Outstanding execution of complex AI models and rigorous enterprise governance.",
+        date: "2026-06-28"
+      }
+    ]
+  },
+  {
+    id: "partner-interloop",
+    name: "Interloop",
+    location: "Sydney, NSW",
+    rating: 4.9,
+    ratingCount: 74,
+    promoted: false,
+    specialization: ["Modern Data Platforms", "Data Governance", "Custom Azure AI Models"],
+    description: "A prominent, highly specialized local specialist focused heavily on modern data platforms, data governance, and custom Azure AI models.",
+    caseStudyTitle: "Advanced Data Governance & Azure AI Integration",
+    caseStudyContext: "Architected a unified data platform with robust governance, accelerating the deployment of custom Azure AI models for localized enterprise operations.",
+    contactEmail: "hello@interloop.com.au",
+    websiteUrl: "https://www.interloop.com.au/",
+    reviews: [
+      {
+        id: "rev-interloop-1",
+        reviewer: "Daniel Kim",
+        rating: 5,
+        comment: "Exceptional capabilities in data governance and deploying custom AI solutions on Azure.",
+        date: "2026-06-29"
+      }
+    ]
   }
 ];
 
