@@ -4566,7 +4566,7 @@ ${advice}
           <header className={`mb-4 border-b pb-3 ${isDark ? "border-slate-800" : "border-slate-200"} flex flex-col gap-2`}>
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <AppLogo size="sm" />
+                <AppLogo size="sm" onClick={() => setActiveMainView("briefings")} />
                 <div>
                   <h1 id="main-title" className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-205 to-sky-450 bg-clip-text text-transparent leading-tight">
                     Corporate Intel Hub
@@ -4643,7 +4643,7 @@ ${advice}
           <header className={`mb-8 flex flex-col md:flex-row md:items-center md:justify-between border-b ${isDark ? "border-slate-800" : "border-slate-200"} pb-6 gap-4`}>
             <div>
               <div className="flex items-center gap-3">
-                <AppLogo size="md" />
+                <AppLogo size="md" onClick={() => setActiveMainView("briefings")} />
                 <div>
                   <h1 id="main-title" className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-sky-400 bg-clip-text text-transparent">
                     Microsoft Corporate Intelligence Hub
