@@ -859,6 +859,7 @@ export default function App() {
     if (path === "/blogs" || path === "/blogs/") return "blogs";
     if (path === "/partners" || path === "/partners/") return "partners";
     if (path === "/licensing" || path === "/licensing/") return "licensing-docs";
+    if (path === "/ai" || path === "/ai/") return "ai-business";
     return "briefings";
   });
 
@@ -870,7 +871,9 @@ export default function App() {
       setActiveMainView("partners");
     } else if (path === "/licensing" || path === "/licensing/") {
       setActiveMainView("licensing-docs");
-    } else if (activeMainView === "blogs" || activeMainView === "partners" || activeMainView === "licensing-docs") {
+    } else if (path === "/ai" || path === "/ai/") {
+      setActiveMainView("ai-business");
+    } else if (activeMainView === "blogs" || activeMainView === "partners" || activeMainView === "licensing-docs" || activeMainView === "ai-business") {
       setActiveMainView("briefings");
     }
   }, [location.pathname]);
@@ -883,7 +886,9 @@ export default function App() {
       navigate("/partners/");
     } else if (activeMainView === "licensing-docs" && path !== "/licensing" && path !== "/licensing/") {
       navigate("/licensing/");
-    } else if (activeMainView !== "blogs" && activeMainView !== "partners" && activeMainView !== "licensing-docs" && (path === "/blogs" || path === "/blogs/" || path === "/partners" || path === "/partners/" || path === "/licensing" || path === "/licensing/")) {
+    } else if (activeMainView === "ai-business" && path !== "/ai" && path !== "/ai/") {
+      navigate("/ai/");
+    } else if (activeMainView !== "blogs" && activeMainView !== "partners" && activeMainView !== "licensing-docs" && activeMainView !== "ai-business" && (path === "/blogs" || path === "/blogs/" || path === "/partners" || path === "/partners/" || path === "/licensing" || path === "/licensing/" || path === "/ai" || path === "/ai/")) {
       navigate("/");
     }
   }, [activeMainView, navigate, location.pathname]);
