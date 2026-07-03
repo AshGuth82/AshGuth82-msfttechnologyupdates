@@ -673,6 +673,121 @@ const DEFAULT_PARTNERS: MicrosoftPartner[] = [
         date: "2026-06-29"
       }
     ]
+  },
+  {
+    id: "partner-theta",
+    name: "Theta",
+    location: "Auckland, New Zealand",
+    rating: 4.9,
+    ratingCount: 112,
+    promoted: true,
+    specialization: ["Digital and App Innovation", "Data and AI", "Modern Work"],
+    description: "One of the few partners holding all six Microsoft Solutions Partner designations, specializing in Digital and App Innovation, Data and AI, and Modern Work.",
+    caseStudyTitle: "Comprehensive Solutions Implementation",
+    caseStudyContext: "Leveraged all six Microsoft Solutions Partner designations to deliver end-to-end digital transformation for enterprise clients in New Zealand.",
+    contactEmail: "contact@theta.co.nz",
+    websiteUrl: "https://www.theta.co.nz/",
+    reviews: [
+      {
+        id: "rev-theta-1",
+        reviewer: "James Robertson",
+        rating: 5,
+        comment: "Exceptional depth of expertise across the entire Microsoft ecosystem.",
+        date: "2026-06-15"
+      }
+    ]
+  },
+  {
+    id: "partner-fusion5",
+    name: "Fusion5",
+    location: "ANZ",
+    rating: 4.8,
+    ratingCount: 205,
+    promoted: true,
+    specialization: ["Dynamics 365", "Copilot", "Azure Services", "ERP"],
+    description: "A prominent partner with top-tier \"Inner Circle\" status globally, recognized for Dynamics 365, Copilot, and Azure services.",
+    caseStudyTitle: "Dynamics 365 & Copilot Enterprise Rollout",
+    caseStudyContext: "Successfully deployed enterprise-scale Dynamics 365 integrated with Copilot across ANZ, earning global Inner Circle recognition.",
+    contactEmail: "info@fusion5.com.au",
+    websiteUrl: "https://www.fusion5.com.au/",
+    reviews: [
+      {
+        id: "rev-fusion5-1",
+        reviewer: "Emily Chen",
+        rating: 5,
+        comment: "Top-tier capabilities in Dynamics 365 and Copilot. Truly an Inner Circle partner.",
+        date: "2026-06-20"
+      }
+    ]
+  },
+  {
+    id: "partner-equerra",
+    name: "Equerra",
+    location: "Auckland, New Zealand",
+    rating: 4.7,
+    ratingCount: 54,
+    promoted: false,
+    specialization: ["Dynamics 365", "ERP", "Mid-Market", "Food & Beverage"],
+    description: "Highly specialized in Dynamics 365 and ERP, offering fixed-price projects (starting at NZ $80,000) tailored for the mid-market and the food & beverage sector.",
+    caseStudyTitle: "Food & Beverage ERP Transformation",
+    caseStudyContext: "Delivered a tailored Dynamics 365 ERP solution for a major food and beverage manufacturer via a fixed-price model.",
+    contactEmail: "hello@equerra.co.nz",
+    websiteUrl: "https://www.equerra.co.nz/",
+    reviews: [
+      {
+        id: "rev-equerra-1",
+        reviewer: "Mark Thompson",
+        rating: 4.5,
+        comment: "Great predictability with their fixed-price ERP models for the mid-market.",
+        date: "2026-06-10"
+      }
+    ]
+  },
+  {
+    id: "partner-virtuoso",
+    name: "Virtuoso IT Limited",
+    location: "Auckland, New Zealand",
+    rating: 4.8,
+    ratingCount: 89,
+    promoted: false,
+    specialization: ["Managed Services", "Multi-Technology Partnerships", "Microsoft Cloud"],
+    description: "Based in Auckland, this managed service provider holds multiple technology partnerships alongside Microsoft.",
+    caseStudyTitle: "Multi-Cloud Managed Services",
+    caseStudyContext: "Provided comprehensive managed services blending Microsoft solutions with other technology partners for seamless IT operations.",
+    contactEmail: "support@virtuoso.co.nz",
+    websiteUrl: "https://www.virtuoso.co.nz/",
+    reviews: [
+      {
+        id: "rev-virtuoso-1",
+        reviewer: "Sarah Wilson",
+        rating: 5,
+        comment: "Excellent managed service provider with broad technology expertise.",
+        date: "2026-06-05"
+      }
+    ]
+  },
+  {
+    id: "partner-mobile-mentor",
+    name: "Mobile Mentor",
+    location: "Auckland, New Zealand",
+    rating: 4.8,
+    ratingCount: 132,
+    promoted: false,
+    specialization: ["Cross-Platform Managed Services", "End-to-End Microsoft Support", "Modern Work"],
+    description: "Headquartered in Auckland, providing cross-platform managed services and end-to-end Microsoft support.",
+    caseStudyTitle: "End-to-End Managed Mobility",
+    caseStudyContext: "Delivered comprehensive cross-platform managed services and complete Microsoft ecosystem support for distributed workforces.",
+    contactEmail: "info@mobile-mentor.com",
+    websiteUrl: "https://www.mobile-mentor.com/",
+    reviews: [
+      {
+        id: "rev-mobilementor-1",
+        reviewer: "David Lee",
+        rating: 5,
+        comment: "Superb end-to-end Microsoft support and cross-platform management.",
+        date: "2026-06-18"
+      }
+    ]
   }
 ];
 
