@@ -975,6 +975,7 @@ export default function App() {
     if (path === "/partners" || path === "/partners/") return "partners";
     if (path === "/licensing" || path === "/licensing/") return "licensing-docs";
     if (path === "/ai" || path === "/ai/") return "ai-business";
+    if (path === "/financials" || path === "/financials/") return "business";
     return "briefings";
   });
 
@@ -988,7 +989,9 @@ export default function App() {
       setActiveMainView("licensing-docs");
     } else if (path === "/ai" || path === "/ai/") {
       setActiveMainView("ai-business");
-    } else if (activeMainView === "blogs" || activeMainView === "partners" || activeMainView === "licensing-docs" || activeMainView === "ai-business") {
+    } else if (path === "/financials" || path === "/financials/") {
+      setActiveMainView("business");
+    } else if (activeMainView === "blogs" || activeMainView === "partners" || activeMainView === "licensing-docs" || activeMainView === "ai-business" || activeMainView === "business") {
       setActiveMainView("briefings");
     }
   }, [location.pathname]);
@@ -1003,7 +1006,9 @@ export default function App() {
       navigate("/licensing/");
     } else if (activeMainView === "ai-business" && path !== "/ai" && path !== "/ai/") {
       navigate("/ai/");
-    } else if (activeMainView !== "blogs" && activeMainView !== "partners" && activeMainView !== "licensing-docs" && activeMainView !== "ai-business" && (path === "/blogs" || path === "/blogs/" || path === "/partners" || path === "/partners/" || path === "/licensing" || path === "/licensing/" || path === "/ai" || path === "/ai/")) {
+    } else if (activeMainView === "business" && path !== "/financials" && path !== "/financials/") {
+      navigate("/financials/");
+    } else if (activeMainView !== "blogs" && activeMainView !== "partners" && activeMainView !== "licensing-docs" && activeMainView !== "ai-business" && activeMainView !== "business" && (path === "/blogs" || path === "/blogs/" || path === "/partners" || path === "/partners/" || path === "/licensing" || path === "/licensing/" || path === "/ai" || path === "/ai/" || path === "/financials" || path === "/financials/")) {
       navigate("/");
     }
   }, [activeMainView, navigate, location.pathname]);
