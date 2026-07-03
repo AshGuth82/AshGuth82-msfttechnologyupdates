@@ -10133,6 +10133,57 @@ ${advice}
             {/* Interactive Project Roadmap */}
             <ProjectRoadmap isDark={isDark} />
 
+            {/* Partner Distribution Recharts Analytics */}
+            <div className={`p-6 rounded-2xl border ${isDark ? "bg-[#111827] border-slate-800/80" : "bg-white border-slate-200 shadow-sm"}`}>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                  <h3 className={`text-sm font-extrabold flex items-center gap-2 ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+                    <BarChart3 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Regional Partner Analytics</span>
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Visualizing partner distribution and average ratings across Australia and New Zealand.
+                  </p>
+                </div>
+              </div>
+              <div className="h-[280px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={
+                    Object.entries(partners.reduce((acc, p) => {
+                      let region = "Australia";
+                      const loc = p.location.toLowerCase();
+                      if (loc.includes("nz") || loc.includes("new zealand") || loc.includes("auckland") || loc.includes("wellington") || loc.includes("christchurch")) {
+                        region = "New Zealand";
+                      } else if (loc.includes("anz")) {
+                        region = "ANZ Cross-Region";
+                      }
+                      if (!acc[region]) acc[region] = { count: 0, totalRating: 0 };
+                      acc[region].count += 1;
+                      acc[region].totalRating += p.rating;
+                      return acc;
+                    }, {} as Record<string, {count: number, totalRating: number}>)).map(([name, data]) => ({
+                      name,
+                      count: data.count,
+                      avgRating: data.count > 0 ? Number((data.totalRating / data.count).toFixed(2)) : 0
+                    }))
+                  }>
+                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? "#334155" : "#e2e8f0"} vertical={false} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? "#94a3b8" : "#64748b" }} dy={10} />
+                    <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? "#94a3b8" : "#64748b" }} />
+                    <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? "#94a3b8" : "#64748b" }} domain={[0, 5]} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: isDark ? "#1e293b" : "#ffffff", borderColor: isDark ? "#334155" : "#e2e8f0", borderRadius: "8px", fontSize: "12px", boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)" }}
+                      itemStyle={{ color: isDark ? "#e2e8f0" : "#1e293b", fontWeight: "bold" }}
+                      cursor={{fill: isDark ? "#334155" : "#f1f5f9", opacity: 0.4}}
+                    />
+                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                    <Bar yAxisId="left" dataKey="count" name="Partner Count" fill="#0ea5e9" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                    <Line yAxisId="right" type="monotone" dataKey="avgRating" name="Avg Rating" stroke="#10b981" strokeWidth={3} dot={{ r: 4, fill: "#10b981", strokeWidth: 2, stroke: isDark ? "#1e293b" : "#ffffff" }} activeDot={{ r: 6 }} />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
             {/* Split view Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
