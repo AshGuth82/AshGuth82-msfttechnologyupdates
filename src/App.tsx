@@ -976,6 +976,7 @@ export default function App() {
     if (path === "/licensing" || path === "/licensing/") return "licensing-docs";
     if (path === "/ai" || path === "/ai/") return "ai-business";
     if (path === "/financials" || path === "/financials/") return "business";
+    if (path === "/playbooks" || path === "/playbooks/") return "playbooks";
     return "briefings";
   });
 
@@ -991,7 +992,9 @@ export default function App() {
       setActiveMainView("ai-business");
     } else if (path === "/financials" || path === "/financials/") {
       setActiveMainView("business");
-    } else if (activeMainView === "blogs" || activeMainView === "partners" || activeMainView === "licensing-docs" || activeMainView === "ai-business" || activeMainView === "business") {
+    } else if (path === "/playbooks" || path === "/playbooks/") {
+      setActiveMainView("playbooks");
+    } else if (activeMainView === "blogs" || activeMainView === "partners" || activeMainView === "licensing-docs" || activeMainView === "ai-business" || activeMainView === "business" || activeMainView === "playbooks") {
       setActiveMainView("briefings");
     }
   }, [location.pathname]);
@@ -1008,7 +1011,9 @@ export default function App() {
       navigate("/ai/");
     } else if (activeMainView === "business" && path !== "/financials" && path !== "/financials/") {
       navigate("/financials/");
-    } else if (activeMainView !== "blogs" && activeMainView !== "partners" && activeMainView !== "licensing-docs" && activeMainView !== "ai-business" && activeMainView !== "business" && (path === "/blogs" || path === "/blogs/" || path === "/partners" || path === "/partners/" || path === "/licensing" || path === "/licensing/" || path === "/ai" || path === "/ai/" || path === "/financials" || path === "/financials/")) {
+    } else if (activeMainView === "playbooks" && path !== "/playbooks" && path !== "/playbooks/") {
+      navigate("/playbooks/");
+    } else if (activeMainView !== "blogs" && activeMainView !== "partners" && activeMainView !== "licensing-docs" && activeMainView !== "ai-business" && activeMainView !== "business" && activeMainView !== "playbooks" && (path === "/blogs" || path === "/blogs/" || path === "/partners" || path === "/partners/" || path === "/licensing" || path === "/licensing/" || path === "/ai" || path === "/ai/" || path === "/financials" || path === "/financials/" || path === "/playbooks" || path === "/playbooks/")) {
       navigate("/");
     }
   }, [activeMainView, navigate, location.pathname]);
