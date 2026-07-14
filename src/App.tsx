@@ -1319,6 +1319,7 @@ export default function App() {
 
   // Search and Advanced Filters states
   const [partnerSearchText, setPartnerSearchText] = useState("");
+  const [isPartnerSearchFocused, setIsPartnerSearchFocused] = useState(false);
   const [partnerSpecializationFilter, setPartnerSpecializationFilter] = useState("all");
   const [partnerLocationFilter, setPartnerLocationFilter] = useState("all");
   const [selectedPartnerId, setSelectedPartnerId] = useState<string | null>(null);
@@ -10336,6 +10337,8 @@ ${advice}
                         type="text"
                         value={partnerSearchText}
                         onChange={(e) => setPartnerSearchText(e.target.value)}
+                        onFocus={() => setIsPartnerSearchFocused(true)}
+                        onBlur={() => setTimeout(() => setIsPartnerSearchFocused(false), 200)}
                         placeholder="Search partners by name, specialization, case study, city..."
                         className="w-full text-xs bg-slate-950/80 border border-slate-800 rounded-lg pl-9 pr-8 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-500 font-sans transition-all"
                       />
@@ -10348,6 +10351,64 @@ ${advice}
                         >
                           <X className="w-3 h-3" />
                         </button>
+                      )}
+                      
+                      {/* Search Suggestions */}
+                      {isPartnerSearchFocused && partnerSearchText.trim().length > 0 && (
+                        <div className={`absolute left-0 right-0 top-full mt-1 z-50 rounded-lg border shadow-xl overflow-hidden ${isDark ? "bg-[#0f172a] border-slate-700" : "bg-white border-slate-200"}`}>
+                          {(() => {
+                            const q = partnerSearchText.toLowerCase().trim();
+                            const scored = partners.map(p => {
+                              let score = 0;
+                              p.specialization.forEach(s => {
+                                if (s.toLowerCase().includes(q)) score += 3;
+                              });
+                              if (p.name.toLowerCase().includes(q)) score += 2;
+                              if (p.description.toLowerCase().includes(q)) score += 1;
+                              return { partner: p, score };
+                            });
+                            const topSuggestions = scored.filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 3).map(s => s.partner);
+                            
+                            if (topSuggestions.length === 0) {
+                              return (
+                                <div className="px-4 py-3 text-[10px] text-slate-500 font-mono text-center">
+                                  No partners match your competency search.
+                                </div>
+                              );
+                            }
+                            
+                            return (
+                              <ul className="flex flex-col">
+                                {topSuggestions.map((p) => (
+                                  <li 
+                                    key={`suggest-${p.id}`}
+                                    className={`px-3 py-2.5 border-b last:border-0 cursor-pointer transition ${isDark ? "border-slate-800/50 hover:bg-slate-800/80" : "border-slate-100 hover:bg-slate-50"}`}
+                                    onClick={() => {
+                                      setPartnerSearchText(p.name);
+                                      setSelectedPartnerId(p.id);
+                                    }}
+                                  >
+                                    <div className="flex items-start justify-between gap-2">
+                                      <div>
+                                        <div className={`text-xs font-bold ${isDark ? "text-slate-200" : "text-slate-800"}`}>
+                                          {p.name}
+                                        </div>
+                                        <div className={`text-[9px] mt-0.5 font-mono ${isDark ? "text-slate-500" : "text-slate-400"}`}>
+                                          {p.specialization.slice(0, 2).join(", ")}
+                                          {p.specialization.length > 2 && " ..."}
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center gap-0.5 bg-amber-500/10 text-amber-500 px-1 py-0.5 rounded text-[9px] font-bold">
+                                        <Star className="w-2.5 h-2.5 fill-amber-500" />
+                                        <span>{p.rating}</span>
+                                      </div>
+                                    </div>
+                                  </li>
+                                ))}
+                              </ul>
+                            );
+                          })()}
+                        </div>
                       )}
                     </div>
                     
