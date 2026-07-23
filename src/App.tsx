@@ -1039,6 +1039,15 @@ export default function App() {
     }
   });
 
+  const [isPartnerPortalUnlocked, setIsPartnerPortalUnlocked] = useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem("microsoft_partner_portal_unlocked");
+      return stored ? JSON.parse(stored) : false;
+    } catch {
+      return false;
+    }
+  });
+
   const [adminNewSubName, setAdminNewSubName] = useState<string>("");
   const [adminNewSubEmail, setAdminNewSubEmail] = useState<string>("");
   const [adminNewSubOrg, setAdminNewSubOrg] = useState<string>("");
@@ -9507,7 +9516,31 @@ ${advice}
       </div>
         )}
 
-        {activeMainView === "partners" && (
+        {activeMainView === "partners" && !isPartnerPortalUnlocked && (
+          <div className="space-y-8 animate-in fade-in duration-200">
+            <div className={`p-8 rounded-2xl border flex flex-col items-center justify-center text-center min-h-[60vh] ${isDark ? "bg-[#111827] border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}>
+              <div className="w-16 h-16 bg-sky-500/10 rounded-full flex items-center justify-center mb-6">
+                <Lock className="w-8 h-8 text-sky-450" />
+              </div>
+              <h2 className={`text-2xl font-extrabold tracking-tight mb-3 ${isDark ? "text-white" : "text-slate-900"}`}>Partner Portal Access Restricted</h2>
+              <p className="text-sm text-slate-500 max-w-lg mb-8">
+                The ANZ Microsoft Partner Hub requires an active partner subscription. Unlock full access to the interactive directory, analytics, live RFPs, and capabilities index.
+              </p>
+              <button 
+                onClick={() => {
+                  setIsPartnerPortalUnlocked(true);
+                  localStorage.setItem("microsoft_partner_portal_unlocked", "true");
+                }}
+                className="bg-sky-500 hover:bg-sky-400 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-sky-500/25 transition flex items-center gap-2"
+              >
+                <span>Unlock Partner Portal</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeMainView === "partners" && isPartnerPortalUnlocked && (
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Header Banner */}
             <div className="bg-[#111827] border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
@@ -11898,7 +11931,7 @@ ${advice}
                       </div>
 
                       {/* Flag 1: Corporate Contract Auditor Module */}
-                      <div className="p-3 bg-slate-950/40 border border-slate-850/80 rounded-lg flex items-center justify-between gap-3">
+                      <div className="p-3 bg-slate-950/40 border border-slate-850/80 rounded-lg flex items-center justify-between gap-3 mb-2">
                         <div className="min-w-0">
                           <div className="text-xs font-bold text-white truncate">Corporate Contract Auditor</div>
                           <div className="text-[10px] text-slate-500 font-mono mt-0.5">Toggle Active Alt+C advisory page</div>
@@ -11921,6 +11954,34 @@ ${advice}
                               if (!checked && activeMainView === "contract-auditor") {
                                 setActiveMainView("briefings");
                               }
+                            }}
+                            className="sr-only peer"
+                          />
+                          <div className="w-9 h-5 bg-slate-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-slate-400 after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-500 peer-checked:after:bg-white"></div>
+                        </label>
+                      </div>
+
+                      {/* Flag 2: Partner Portal Access */}
+                      <div className="p-3 bg-slate-950/40 border border-slate-850/80 rounded-lg flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="text-xs font-bold text-white truncate">Partner Portal Access</div>
+                          <div className="text-[10px] text-slate-500 font-mono mt-0.5">Manage partner subscription gate</div>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer select-none">
+                          <input
+                            type="checkbox"
+                            checked={isPartnerPortalUnlocked}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              setIsPartnerPortalUnlocked(checked);
+                              localStorage.setItem("microsoft_partner_portal_unlocked", JSON.stringify(checked));
+                              addToast(
+                                "technology_updates",
+                                checked ? "Partner Portal Unlocked" : "Partner Portal Locked",
+                                checked 
+                                  ? "Partner Hub access is now active and unrestricted."
+                                  : "Partner Hub access has been restricted to subscribers."
+                              );
                             }}
                             className="sr-only peer"
                           />
