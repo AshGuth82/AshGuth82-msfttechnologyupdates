@@ -74,7 +74,7 @@ import {
   List,
   LogOut,
   ShieldAlert,
-  Mail
+  ChevronRight
 } from "lucide-react";
 import { Article, NewsCategory, CachedNews, CustomQueryResponse, MicrosoftPartner, PartnerReview, PriceAlert, BlogPost } from "./types";
 import { jsPDF } from "jspdf";
@@ -827,7 +827,8 @@ export default function App() {
   });
 
   // Theme Select Configuration (High Contrast, Accessible Microsoft Corporate Aesthetic with Solar & System Auto Sync)
-  const themeMode = "dark";
+  let themeMode: "dark" | "light" | "system" | "solar" = "dark";
+  const isTimeDaylight = () => false;
   const theme = "dark";
 
   useEffect(() => {
@@ -10348,7 +10349,7 @@ ${advice}
                       acc[region].count += 1;
                       acc[region].totalRating += p.rating;
                       return acc;
-                    }, {} as Record<string, {count: number, totalRating: number}>)).map(([name, data]) => ({
+                    }, {} as Record<string, {count: number, totalRating: number}>)).map(([name, data]: [string, any]) => ({
                       name,
                       count: data.count,
                       avgRating: data.count > 0 ? Number((data.totalRating / data.count).toFixed(2)) : 0

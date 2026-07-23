@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
 
-const clarityProjectId = import.meta.env.VITE_CLARITY_PROJECT_ID;
+const clarityProjectId = (import.meta as any).env.VITE_CLARITY_PROJECT_ID;
 if (clarityProjectId) {
   Clarity.init(clarityProjectId);
 }
