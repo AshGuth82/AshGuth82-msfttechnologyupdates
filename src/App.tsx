@@ -1047,6 +1047,7 @@ export default function App() {
       return false;
     }
   });
+  const [partnerPortalUnlockEmail, setPartnerPortalUnlockEmail] = useState<string>("");
 
   const [adminNewSubName, setAdminNewSubName] = useState<string>("");
   const [adminNewSubEmail, setAdminNewSubEmail] = useState<string>("");
@@ -9524,18 +9525,40 @@ ${advice}
               </div>
               <h2 className={`text-2xl font-extrabold tracking-tight mb-3 ${isDark ? "text-white" : "text-slate-900"}`}>Partner Portal Access Restricted</h2>
               <p className="text-sm text-slate-500 max-w-lg mb-8">
-                The ANZ Microsoft Partner Hub requires an active partner subscription. Unlock full access to the interactive directory, analytics, live RFPs, and capabilities index.
+                The ANZ Microsoft Partner Hub requires an active partner subscription. Please enter your registered email address to unlock full access to the interactive directory, analytics, live RFPs, and capabilities index.
               </p>
-              <button 
-                onClick={() => {
-                  setIsPartnerPortalUnlocked(true);
-                  localStorage.setItem("microsoft_partner_portal_unlocked", "true");
+              
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (partnerPortalUnlockEmail.trim()) {
+                    setIsPartnerPortalUnlocked(true);
+                    localStorage.setItem("microsoft_partner_portal_unlocked", "true");
+                    addToast("technology_updates", "Access Granted", "Partner Portal has been unlocked.");
+                  }
                 }}
-                className="bg-sky-500 hover:bg-sky-400 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-sky-500/25 transition flex items-center gap-2"
+                className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
               >
-                <span>Unlock Partner Portal</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
+                <input
+                  type="email"
+                  required
+                  value={partnerPortalUnlockEmail}
+                  onChange={(e) => setPartnerPortalUnlockEmail(e.target.value)}
+                  placeholder="name@company.com"
+                  className={`flex-1 text-sm px-4 py-3 rounded-xl border focus:outline-none transition ${
+                    isDark 
+                      ? "bg-slate-950 border-slate-800 text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500/25" 
+                      : "bg-slate-50 border-slate-200 text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/25 shadow-sm"
+                  }`}
+                />
+                <button 
+                  type="submit"
+                  className="bg-sky-500 hover:bg-sky-400 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-sky-500/25 transition flex items-center justify-center gap-2"
+                >
+                  <span>Unlock</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </form>
             </div>
           </div>
         )}
